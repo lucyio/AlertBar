@@ -21,7 +21,8 @@ public enum AlertBarType {
             case .success:
                 return UIColor(0x4CAF50)
             case .error:
-                return UIColor(0xf44336)
+                return UIColor(red: 223/255, green: 89/255, blue: 132/255, alpha: 1)
+                //return UIColor(0xf44336)
             case .notice:
                 return UIColor(0x2196F3)
             case .warning:
