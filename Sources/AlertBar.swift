@@ -46,7 +46,7 @@ public enum AlertBarType {
 }
 
 open class AlertBar: UIView {
-    open static var textAlignment: NSTextAlignment = .left
+    open static var textAlignment: NSTextAlignment = .center
     static var alertBars: [AlertBar] = []
     
     let messageLabel = UILabel()
