@@ -57,7 +57,7 @@ open class AlertBar: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        messageLabel.frame = CGRect(x: 2, y: 2, width: frame.width - 4, height: frame.height - 4)
+        messageLabel.frame = CGRect(x: 6, y: 2, width: frame.width - 12, height: frame.height - 4)
         messageLabel.font = UIFont.systemFont(ofSize: 12)
         self.addSubview(messageLabel)
         
@@ -74,8 +74,17 @@ open class AlertBar: UIView {
     }
     
     open class func show(_ type: AlertBarType, message: String, duration: Double = 2, completion: (() -> Void)? = nil) {
+        
+        var topPadding: CGFloat = 0
+        if #available(iOS 11.0, *) {
+            let window = UIApplication.shared.keyWindow
+            if let topInset = window?.safeAreaInsets.top {
+                topPadding = topInset
+            }
+        }
+        
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
-        let alertBar = AlertBar(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: statusBarHeight))
+        let alertBar = AlertBar(frame: CGRect(x: 0, y: topPadding, width: UIScreen.main.bounds.width, height: statusBarHeight))
         alertBar.messageLabel.text = message
         alertBar.messageLabel.textAlignment = AlertBar.textAlignment
         alertBar.backgroundColor = type.backgroundColor
