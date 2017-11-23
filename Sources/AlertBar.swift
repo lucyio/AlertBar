@@ -53,7 +53,6 @@ open class AlertBar: UIView {
     
     static var currentWindow: UIWindow?
     static var currentAlertBar: AlertBar?
-    static var currentBaseView: UIView?
     
     static let statusBarHeight = UIApplication.shared.statusBarFrame.height
         
@@ -75,7 +74,7 @@ open class AlertBar: UIView {
     }
     
     @objc fileprivate func handleRotate(_ notification: Notification) {
-        self.removeFromSuperview()
+        //self.removeFromSuperview()
         AlertBar.alertBars = []
     }
     
@@ -175,25 +174,25 @@ open class AlertBar: UIView {
         let width = UIScreen.main.bounds.width
         let height = UIScreen.main.bounds.height
         
-        currentBaseView = UIView(frame: UIScreen.main.bounds)
-        currentBaseView?.isUserInteractionEnabled = false
-        currentBaseView?.addSubview(currentAlertBar!)
+        let baseView = UIView(frame: UIScreen.main.bounds)
+        baseView.isUserInteractionEnabled = false
+        baseView.addSubview(currentAlertBar!)
         
         let orientation = UIApplication.shared.statusBarOrientation
         if orientation.isLandscape {
             currentWindow = UIWindow(frame: CGRect(x: 0, y: 0, width: height, height: width))
             let sign: CGFloat = orientation == .landscapeLeft ? -1 : 1
             let d = fabs(width - height) / 2
-            currentBaseView?.transform = CGAffineTransform(rotationAngle: sign * CGFloat.pi / 2).translatedBy(x: sign * d, y: sign * d)
+            baseView.transform = CGAffineTransform(rotationAngle: sign * CGFloat.pi / 2).translatedBy(x: sign * d, y: sign * d)
         } else {
             currentWindow = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: height))
             if orientation == .portraitUpsideDown {
-                currentBaseView?.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+                baseView.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
             }
         }
         currentWindow?.isUserInteractionEnabled = false
         currentWindow?.windowLevel = UIWindowLevelStatusBar + 1 + CGFloat(AlertBar.alertBars.count)
-        currentWindow?.addSubview(currentBaseView!)
+        currentWindow?.addSubview(baseView)
         currentWindow?.makeKeyAndVisible()
         
         currentAlertBar?.transform = CGAffineTransform(translationX: 0, y: -statusBarHeight)
